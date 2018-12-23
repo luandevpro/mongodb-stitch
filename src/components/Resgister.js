@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { UserPasswordAuthProviderClient } from "mongodb-stitch-browser-sdk";
 import { Formik } from "formik";
 import FormField from "./FormField";
+import { client } from "../config/stitch";
 
 export default class Resgister extends Component {
 	constructor(props) {
@@ -11,7 +13,17 @@ export default class Resgister extends Component {
 		};
 	}
 	handleSubmit = (values, { resetForm }) => {
-		console.log(values);
+		const emailPassClient = client.auth.getProviderClient(
+			UserPasswordAuthProviderClient.factory
+		);
+		emailPassClient
+			.registerWithEmail(values.email, values.password)
+			.then(() => {
+				console.log("Successfully sent account confirmation email!");
+			})
+			.catch(err => {
+				console.log("Error registering new user:", err);
+			});
 		resetForm({
 			email: "",
 			password: "",

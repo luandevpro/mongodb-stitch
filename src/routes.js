@@ -23,7 +23,7 @@ const routes = [
 	{
 		path: "/auth",
 		exact: false,
-		main: () => <Auth />,
+		main: ({ history }) => <Auth history={history} />,
 	},
 ];
 
